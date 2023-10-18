@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu cartes mémoire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Memory Fruits</h1>
+    </header>
+
+    <main>
+        <p>Score : <span class="score"> 0 / 10</span></p>
+
+        <div class="boutons">
+            <button class="facile">Facile</button>
+            <button class="difficile">Difficile</button>
+        </div>
+
+        <button class="reset">Reset jeu</button>
+
+        <p>Difficulté: <span class="niveau">Difficile</span></p>
+
+        <div class="grille">
+            <div class="carte" data-attr="banana">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/banana.svg" alt="Banane 1">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="apple">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/apple.svg" alt="Pomme 1">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="apple">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/apple.svg" alt="Pomme 2">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="banana">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/banana.svg" alt="Banane 2">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="brocoli">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/brocoli.svg" alt="Brocoli 1">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="cherry">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/cherry.svg" alt="Cerise 1">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="pepper">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/pepper.svg" alt="Poivre 1">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="pepper">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/pepper.svg" alt="Poivre 2">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="cherry">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/cherry.svg" alt="Cerise 2">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="brocoli">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/brocoli.svg" alt="Brocoli 2">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="straw">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/straw.svg" alt="Framboise 1">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="carte" data-attr="straw">
+                <div class="double-face">
+                    <div class="face">
+                        <img src="ressources/straw.svg" alt="Framboise 2">
+                    </div>
+                    <div class="arriere">
+                        <img src="ressources/question-mark.svg" alt="question mark">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
