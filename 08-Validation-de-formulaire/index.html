@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation de formulaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="box-login">
+
+        <h2>Inscrivez-vous.</h2>
+
+        <form>
+            <div class="form-groupe">
+                <label for="utilisateur">Nom d'utilisateur</label>
+                <input id="utilisateur" type="text" placeholder="Nom d'utilisateur" maxlength="24">
+                <img src="ressources/check.svg" alt="icone validation" class="icone-verif">
+                <span class="message-alerte">Choisissez un pseudo entre 3 et 24 caractères.</span>
+            </div>
+
+            <div class="form-groupe">
+                <label for="email">Email</label>
+                <input id="email" type="email" placeholder="Votre email">
+                <img src="ressources/check.svg" alt="icone validation" class="icone-verif">
+                <span class="message-alerte">Entrez un email valide.</span>
+            </div>
+
+            <div class="form-groupe">
+                <label for="mdp">Mot de passe</label>
+                <input id="mdp" type="password" placeholder="Mot de passe">
+                <img src="ressources/eye.png" alt="icone voir mot de passe" class="oeilMdp">
+                <img src="ressources/check.svg" alt="icone validation" class="icone-verif">
+                <span class="message-alerte">Minimum 1 symbole, 1 lettre, 1 chiffre.</span>
+                <div class="ligne">
+                    <div class="l1"><span>Faible</span></div>
+                    <div class="l2"><span>Moyen</span></div>
+                    <div class="l3"><span>Fort</span></div>
+                </div>
+            </div> 
+
+            <div class="form-groupe">
+                <label for="mdpconf">Confirmation du mot de passe</label>
+                <input id="mdpconf" type="password" placeholder="Mot de passe">
+                <img src="ressources/eye.png" alt="icone voir mot de passe" class="oeilConfMdp">
+                <img src="ressources/check.svg" alt="icone validation" class="icone-verif">
+            </div>
+            
+            <button type="submit">Création du compte</button>
+        </form>
+    </div>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
