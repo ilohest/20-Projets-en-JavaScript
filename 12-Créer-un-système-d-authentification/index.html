@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+    <div class="const-btns">
+        <button class="btn-inscription">S'inscrire</button>
+        <button class="btn-connection">Se connecter</button>
+        <button class="btn-deconnection">Se déconnecter</button>
+    </div>
+
+    <h1>Bienvenue, inscrivez-vous ou connectez-vous.</h1>
+    <p class="info">Contenu public.</p>
+
+    <form class="form-inscription">
+        <h2>Inscription</h2>
+
+        <label for="emailInscription">Email</label>
+        <input type="email" class="email-inscription" id="emailInscription">
+
+        <label for="mdpInscription">Mot de passe</label>
+        <input type="password" class="mdp-inscription" id="mdpInscription">
+        <img src="eye.png" alt="icone voir mot de passe" class="oeilMdpI">
+
+        <button type="submit">S'inscrire</button>
+
+        <p class="message-erreur">L'adresse e-mail est déjà utilisée. Veuillez utiliser une adresse e-mail différente.</p>
+    </form>
+
+    <form class="form-connection">
+        <h2>Connection</h2>
+
+        <label for="emailConnection">Email</label>
+        <input type="email" class="email-connection" id="emailConnection">
+
+        <label for="mdpConnection">Mot de passe</label>
+        <input type="password" class="mdp-connection" id="mdpConnection">
+        <img src="eye.png" alt="icone voir mot de passe" class="oeilMdpC">
+
+        <button type="submit">Se connecter</button>
+
+    </form>
+
+
+    <p class="user"></p>
+
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+    
+    <script>    
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyAO9PZknYqHVt4tTPRRxXD4HU_0XAdFQ20",
+          authDomain: "authentification-js-8a496.firebaseapp.com",
+          projectId: "authentification-js-8a496",
+          storageBucket: "authentification-js-8a496.appspot.com",
+          messagingSenderId: "498624420105",
+          appId: "1:498624420105:web:ea99e5bbe460260a671bd8"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        //console.log(auth);
+    </script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
