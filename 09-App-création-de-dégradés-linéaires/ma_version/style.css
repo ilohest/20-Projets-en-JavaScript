@@ -81,7 +81,7 @@ span {
     animation: remuer 1s linear 1;
 }
 
-@keyframes remuer {
+@keyframes remuer { /* animation message contenu dans le span avec la classe animation ajoutée via JS qiand <2 couleurs */
     0%,
     7% {
         transform: rotateZ(0);
@@ -106,3 +106,23 @@ span {
         transform: rotateZ(0);
     }
 }
+.css-script {
+    width: 30%;
+    max-width: 400px;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    height: 60px;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #886262;
+    font-size: 20px;
+} 
+.css-script:hover {
+    color: #f1f1f1;
+}
+

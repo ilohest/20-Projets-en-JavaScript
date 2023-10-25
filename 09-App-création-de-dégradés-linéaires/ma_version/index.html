@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Couleurs fun JavaScript</title>
+    <title>Fun gradient generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
 </head>
 <body class="linear">
 
@@ -15,6 +17,7 @@
 
     <div class="container-range">
         <input type="range" class="inp-range" aria-label="Inclinaison/rayon du dégradé">
+        
     </div>
 
     <div class="container-btn">
@@ -42,6 +45,10 @@
     </div>
 
     <span></span>
+
+    <p class="css-script" onclick="copyCSS()">Copy CSS</p>
+
+    <md-slider min="0" max="100" value="50"></md-slider>
 
     <script src="app.js"></script>
 </body>

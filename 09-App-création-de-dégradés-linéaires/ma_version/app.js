@@ -8,12 +8,16 @@ const btnShuffle = document.querySelector(".shuffle");
 const linearBtn = document.getElementById('linear');
 const radialBtn = document.getElementById('radial');
 
+
 // Initialisation
 
 let valCouleurs = ['#BA5370','#F4E2D8'];
 let inclinaison = 45;
 let rayon = 50; 
 let index = 3; //représente le data-index de l'input couleur
+let type = 'linear';
+let codeCSSLineaire = "";
+let codeCSSRadial = "";
 
 inputsCouleur[0].value = valCouleurs[0];
 inputsCouleur[1].value = valCouleurs[1];
@@ -22,13 +26,16 @@ inputsCouleur[0].style.background = valCouleurs[0];
 inputsCouleur[1].style.background = valCouleurs[1];
 
 fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})` // pareil que `linear-gradient(${inclinaison}deg, ${valCouleurs[0]}, ${valCouleurs[1]})` car valCouleurs contient des chaines de caract séparées par des virgules, ce qui correspond aux arguments qu'il faut mettre dansla fonction css linear-gradient :)
-
+//fond.style.backgroundSize= "50px 50px"; /* Taille des cases du quadrillage */
+//fond.style.backgroundRepeat= "repeat";
 // On écoute le slider pour définir le fond à partir de l'inclinaison ou du rayon
 
 inputRange.addEventListener('input', (e) => {
   if(fond.classList.contains('linear')) {
     inclinaison = e.target.value * 3.6;
     fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})`;
+    //console.log('inputRange.addEventListener if linear - "inclinaison" : ' + inclinaison)
+    codeCSSLineaire = `background: linear-gradient(${inclinaison}deg, ${valCouleurs});`;
   }
   else if(fond.classList.contains('radial')) {
     rayon = e.target.value;
@@ -39,39 +46,50 @@ inputRange.addEventListener('input', (e) => {
     }
     gradientString += ')';
     fond.style.background = gradientString;
+    codeCSSRadial = `background: ${gradientString};`;
   }
 });
 
 // Choix gradient radial ou linéaire
 
-linearBtn.addEventListener('change', () => {
-  setGradient('linear', valCouleurs);
+linearBtn.addEventListener('click', () => {
+  type = 'linear';
+  //console.log('linearBtn ' + type)
+  setGradient(type, valCouleurs);
   fond.classList.remove('radial');
   fond.classList.add('linear');
 });
 
-radialBtn.addEventListener('change', () => {
-  setGradient('radial', valCouleurs);
+radialBtn.addEventListener('click', () => {
+  type = 'radial';
+  setGradient(type, valCouleurs);
   fond.classList.remove('linear');
   fond.classList.add('radial');
 });
 
 function setGradient(type, colors) {
     if(type === 'linear') {
-        fond.style.background = `linear-gradient(${inclinaison}deg, ${colors})`
+        fond.style.background = `linear-gradient(${inclinaison}deg, ${colors})`;
+        //console.log('setGradient if linear : ' + type, inclinaison, colors)
+        codeCSSLineaire = `background: linear-gradient(${inclinaison}deg, ${colors});`;
+        //console.log(codeCSSLineaire);
     }
     else if(type === 'radial') {
 
         let gradientString = 'radial-gradient(circle at center';
         const colorStep = 100 / (valCouleurs.length - 1);
+
         //console.log(valCouleurs.length);
         for (let i = 0; i < colors.length; i++) {
             //console.log("for gradient");
             gradientString += `, ${colors[i]} ${colorStep * i}%`;
+            //console.log(type, colors, i, colorStep);
         }
         gradientString += ')';
         //console.log(gradientString);
         fond.style.background = gradientString;
+        codeCSSRadial = `background: ${gradientString};`;
+        //console.log(codeCSSRadial);
     }
 }
 
@@ -169,3 +187,86 @@ btnShuffle.addEventListener("click", () => {
         setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs);
     }
 });
+
+// Copier code css dans le presse papier
+
+function copyCSS() {
+    let codeCSS = "";
+    //console.log("copyCSS - 'type' : " + type);
+
+    // Sélectionner le texte à copier
+    if(type === 'linear') {
+        codeCSS = codeCSSLineaire;
+        //console.log("copyCSS if linear : " + codeCSS);
+    }
+    else if(type === 'radial') {
+        codeCSS = codeCSSRadial;
+        //console.log("copyCSS if radial : " + codeCSS);
+    };
+
+    // Créer un nouvel élément de texte temporaire pour y stocker le contenu à copier
+    const elementTemporaire = document.createElement('textarea');
+    elementTemporaire.value = codeCSS;
+    console.log("copyCSS - 'codeCSS' : " + codeCSS);
+
+    // Ajouter l'élément temporaire à la page
+    document.body.appendChild(elementTemporaire);
+
+    // Sélectionner le contenu de l'élément temporaire
+    elementTemporaire.select();
+
+    // Copier le texte sélectionné dans le presse-papiers
+    document.execCommand('copy');
+
+    // Supprimer l'élément temporaire de la page
+    document.body.removeChild(elementTemporaire);
+
+    // Modifier le texte du bouton
+    const bouton = document.querySelector('.css-script');
+    bouton.innerText = 'CSS copied to clipboard !';
+
+    // Revenir au texte d'origine après 3 secondes (3000 millisecondes)
+    setTimeout(function() {
+        bouton.innerText = 'Copy CSS';
+    }, 3000);
+}
+
+// Favicon avec couleurs aléatoires à chaque chargement de la page 
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  window.onload = function () {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const size = 64; // Taille de l'icône en pixels
+    canvas.width = size;
+    canvas.height = size;
+
+    const centerX = size / 2;
+    const centerY = size / 2;
+    const radius = size / 2;
+
+    const gradient = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+    const color1 = getRandomColor();
+    const color2 = getRandomColor();
+    gradient.addColorStop(0, color1);
+    gradient.addColorStop(1, color2);
+
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    context.fillStyle = gradient;
+    context.fill();
+
+    const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+    link.href = canvas.toDataURL('image/x-icon');
+    document.getElementsByTagName('head')[0].appendChild(link);
+  };
