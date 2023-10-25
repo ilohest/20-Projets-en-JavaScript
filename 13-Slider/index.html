@@ -1,0 +1,35 @@
+<!-- <i class="fa-thin fa-chevron-left fa-fade fa-xs" style="color: #000000;"></i> -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Slider de photos</h1>
+    <div class="slider">
+        <div class="slides">
+            <img src="ressources/img1.jpg" class="active-slide">
+            <img src="ressources/img2.jpg">
+            <img src="ressources/img3.jpg">
+        </div>
+        <div class="commandes">
+            <button class="left">
+                <img src="ressources/gauche.png" >
+            </button>
+            <button class="right">
+                <img src="ressources/droite.png" >
+            </button>
+        </div>
+        <div class="cercles">
+            <button data-clic="1" class="cercle active-cercle"></button>
+            <button data-clic="2" class="cercle"></button>
+            <button data-clic="3" class="cercle"></button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
