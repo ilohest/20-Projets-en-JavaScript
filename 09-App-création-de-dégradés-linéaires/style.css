@@ -1,0 +1,189 @@
+*,
+::before, ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #d3b7b7;
+}
+.container-couleurs,
+.container-range,
+.container-btn,
+.container-radio,
+.switch-container,
+.css-script {
+    height: auto;
+    width: 230px;
+    display: flex;
+    margin-bottom:20px;
+    justify-content: space-between;
+}
+
+/* Input couleurs */
+
+.container-couleurs {
+    flex-direction: column;
+}
+.inp-couleur {
+    width: 100%;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 20px;
+    border: 2px solid #886262;
+    margin: 5px 0;
+}
+
+/* Boutons + - shuffle */
+
+button {
+    border: none;
+    outline: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+    padding: 3px;
+    border: 2px solid #886262;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+button img {
+    width: 30px;
+    pointer-events: none; /* si on met un event listener sur le bouton, il faut qu'il fonctionne meme quand on clique sur l'image du bouton donc on met ça */
+}
+
+/* Choix du type de gradient */
+
+.container-radio {
+    flex-direction: column;
+}
+.gradient-lineaire,
+.gradient-radial {
+    display: flex;
+    align-items: center;
+}
+.gradient-lineaire label,
+.gradient-radial label{
+    width: 100%;
+}
+
+/* Inclinaison / rayon du gradient */
+
+.container-range {
+ flex-direction: column;
+}
+
+/* Bouton radio : repeat background */
+.checkbox-container {
+    display: flex;
+    justify-content: space-between;
+}
+.switch-container {
+    flex-direction: column;
+}
+/* .switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 21px;
+} */
+/* .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+} */
+/* .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+} */
+/* .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 4px;
+    bottom: 4px;
+    border-radius: 50%;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+} */
+/* .switch input:checked + .slider {
+    background-color: #0075ff;
+}
+.switch input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+} */
+
+/* Message d'erreur si <2 couleurs */
+
+.erreur {
+    margin-top: 20px;
+    font-size: 20px;
+    text-align: center;
+    color: #553c3c;
+
+}
+.animation {
+    animation: remuer 1s linear 1;
+}
+@keyframes remuer { /* animation message contenu dans le span avec la classe animation ajoutée via JS quand <2 couleurs */
+    0%,
+    7% {
+        transform: rotateZ(0);
+    }
+    15% {
+        transform: rotateZ(-13deg);
+    }
+    20% {
+        transform: rotateZ(10deg);
+    }
+    25% {
+        transform: rotateZ(-10deg);
+    }
+    30% {
+        transform: rotateZ(6deg);
+    }
+    35% {
+        transform: rotateZ(-4deg);
+    }
+    40%,
+    100% {
+        transform: rotateZ(0);
+    }
+}
+
+/* Copier CSS */
+
+.css-script {
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    padding: 10px;
+    border: 1px solid #886262;
+    font-size: 18px;
+}
+.css-script:hover {
+    color: #f1f1f1;
+}
+
