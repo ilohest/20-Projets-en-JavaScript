@@ -29,9 +29,30 @@ body {
 /* Input couleurs */
 
 .container-couleurs {
+    width: 100%;
+}
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 300px; /* Ajustez la largeur selon vos besoins */
+}
+.color-picker-trigger {
+    position: absolute;
+    top: 21px;
+    right: 15px;
+    cursor: pointer;
+}
+input[type="color"] {
+    position: absolute;
+    right: -55px;
+    opacity:1;
+}
+.container-couleurs {
     flex-direction: column;
 }
 .inp-couleur {
+    flex: 1;
     width: 100%;
     border-radius: 3px;
     padding: 10px;
