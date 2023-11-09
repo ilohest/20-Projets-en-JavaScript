@@ -5,7 +5,8 @@ const tilt = document.querySelector('.tilt');
 const btns = document.querySelectorAll('button');
 const fond = document.body;
 const containerCouleurs = document.querySelector('.container-couleurs');
-const erreur = document.querySelector('.erreur');
+const errorColorsNb = document.querySelector('.erreur-nb-couleurs');
+const errorHexaCode = document.querySelector('.erreur-code-hexa');
 const btnShuffle = document.querySelector(".shuffle");
 const linearBtn = document.getElementById('linear');
 const radialBtn = document.getElementById('radial');
@@ -40,14 +41,12 @@ inputsCouleur[1].value = valCouleurs[1];
 inputsCouleur[0].style.background = valCouleurs[0];
 inputsCouleur[1].style.background = valCouleurs[1];
 
-// Regex pour vérifier les input de couleur
+// Regex pour vérifier les input manuels de couleur
 
 function checkHexValidity(input) {
-    const inputValue = input.value;
-    if (regex.test(inputValue)) {
-        console.log(`Le code hexadécimal ${inputValue} est valide.`);
-    } else {
-        console.log(`Le code hexadécimal ${inputValue} n'est pas valide.`);
+    errorHexaCode.innerText = '';
+    if (!regex.test(input)) {
+        errorHexaCode.innerText = `The hexadecimal code ${input} is invalid.`;
     }
 }
 
@@ -213,15 +212,15 @@ btns.forEach(btn => {
 })
 
 function rajouteEnleve(e){
-    erreur.innerText = '';
-
+    errorColorsNb.innerText = '';
+    const allInputs = document.querySelectorAll(".inp-couleur");
     const randomColor = Math.floor(Math.random()*10000000).toString(16); // Math.floor retourne l'entier en dessous d'un nombre à virgule - Math.random retourne un nombre à virgule entre 0 et 0.999999999999999999 - *10000000 permet d'avoir un grand nombre de nombres aléatoires - toString(16):  pour convertir un nombre en chaîne de caractères en utilisant la base 16 (hexadécimal)
 
     // Rajout couleur 
 
     if(e.target.className === "plus"){
 
-        if(inputsCouleur.length > 8){ // on ne peut pas rajouter plus de 8 couleurs
+        if(allInputs.length > 8){ // on ne peut pas rajouter plus de 8 couleurs
             return;
         }
 
@@ -239,7 +238,7 @@ function rajouteEnleve(e){
         
         // On rajoute les nouvelles couleurs dans le tableau valCouleurs
         valCouleurs.push(`#${randomColor.toUpperCase()}`);
-        inputsCouleur = document.querySelectorAll(".inp-couleur");
+        // inputsCouleur = document.querySelectorAll(".inp-couleur");
 
         // MAJ du fond body avec le contenu  de valCouleurs (origine: bouton "plus")
         setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
@@ -257,15 +256,11 @@ function rajouteEnleve(e){
 
     else if(e.target.className === "moins"){
         if(valCouleurs.length === 2){
-            erreur.innerText = 'Il faut au moins deux couleurs';
-            erreur.classList.add('animation');
-            setTimeout(() => {
-                erreur.classList.remove('animation');
-            }, 1000);
+            errorColorsNb.innerText = 'At least 2 colors needed.';
         }
         else {
             valCouleurs.pop(); // on supprime la dernière couleur du tableau valCouleurs
-            inputsCouleur[inputsCouleur.length - 1].remove();  //on supprime l'inpu qui correspond dans le DOM
+            allInputs[allInputs.length - 1].remove();  //on supprime l'input qui correspond dans le DOM
 
             index--;
 
@@ -275,17 +270,21 @@ function rajouteEnleve(e){
     }  
 }
 
-//Modification des couleurs des 2 inputs de base
+//Modification manuelle des couleurs via les inputs
 
 inputsCouleur.forEach(inp => {
-    inp.addEventListener('input', MAJColors);
-})
+    inp.addEventListener('input', MAJColors)
+});
 
 function MAJColors(e){
     let indexEnCours = e.target.getAttribute('data-index');
     e.target.value = e.target.value.toUpperCase();
     valCouleurs[indexEnCours - 1] = e.target.value.toUpperCase();
     e.target.style.background = valCouleurs[indexEnCours - 1];
+
+    // Vérification de la validité du code hexa via fonction qui check via un regex 
+    checkHexValidity(valCouleurs[indexEnCours - 1]);
+    //console.log('MAJColor - valCouleurs : ' + typeof valCouleurs + ' - indexEnCours : ' + indexEnCours + ' - valCouleurs[indexEnCours] : ' + valCouleurs[indexEnCours-1]);
 
     // MAJ du fond body avec le contenu de valCouleurs (origine: input ajouté manuellement)
     setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
@@ -300,6 +299,8 @@ btnShuffle.addEventListener("click", () => {
 
         inputs[i].value = valCouleurs[i].toUpperCase();
         inputs[i].style.background = valCouleurs[i].toUpperCase();
+
+        errorHexaCode.innerText = '';
 
         // MAJ du fond body avec le contenu  de valCouleurs (origine: bouton "shuffle")
         setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);

@@ -20,7 +20,7 @@ body {
 .switch-container,
 .css-script {
     height: auto;
-    width: 230px;
+    width: 310px;
     display: flex;
     margin-bottom:20px;
     justify-content: space-between;
@@ -38,6 +38,13 @@ body {
     font-size: 20px;
     border: 2px solid #886262;
     margin: 5px 0;
+}
+.erreur-code-hexa {
+    color: #ff3636;
+    font-weight: 600;
+}
+.container-couleurs-error {
+    margin-bottom: 20px;
 }
 
 /* Boutons + - shuffle */
@@ -137,40 +144,12 @@ button img {
 
 /* Message d'erreur si <2 couleurs */
 
-.erreur {
-    margin-top: 20px;
-    font-size: 20px;
-    text-align: center;
-    color: #553c3c;
-
+.erreur-nb-couleurs {
+    color: #ff3636;
+    font-weight: 600;
 }
-.animation {
-    animation: remuer 1s linear 1;
-}
-@keyframes remuer { /* animation message contenu dans le span avec la classe animation ajoutée via JS quand <2 couleurs */
-    0%,
-    7% {
-        transform: rotateZ(0);
-    }
-    15% {
-        transform: rotateZ(-13deg);
-    }
-    20% {
-        transform: rotateZ(10deg);
-    }
-    25% {
-        transform: rotateZ(-10deg);
-    }
-    30% {
-        transform: rotateZ(6deg);
-    }
-    35% {
-        transform: rotateZ(-4deg);
-    }
-    40%,
-    100% {
-        transform: rotateZ(0);
-    }
+.container-btn-error {
+    margin-bottom: 20px;
 }
 
 /* Copier CSS */
@@ -190,4 +169,3 @@ button img {
 .css-script:hover {
     background: #f1f1f1;
 }
-
