@@ -1,4 +1,5 @@
-const inputsCouleur = document.querySelectorAll('.inp-couleur');
+var inputsCouleur = document.querySelectorAll('.inp-couleur');
+const regex = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
 const radius = document.querySelector('.radius');
 const tilt = document.querySelector('.tilt');
 const btns = document.querySelectorAll('button');
@@ -12,6 +13,9 @@ const switchInput = document.getElementById('toggle');
 const repetitionWidth = document.querySelector('.repetition-width');
 const repetitionHeight = document.querySelector('.repetition-height');
 const switchContainer = document.querySelector('.switch-container');
+const widthInput = document.getElementById('repetition-width');
+const heightInput = document.getElementById('repetition-height');
+
 
 // Initialisation
 
@@ -26,18 +30,41 @@ let hauteurRepetition = 50;
 let codeCSSLineaire = "";
 let codeCSSRadial = "";
 
+fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})` // pareil que `linear-gradient(${inclinaison}deg, ${valCouleurs[0]}, ${valCouleurs[1]})` car valCouleurs contient des chaines de caract séparées par des virgules, ce qui correspond aux arguments qu'il faut mettre dansla fonction css linear-gradient :)
+
 inputsCouleur[0].value = valCouleurs[0];
 inputsCouleur[1].value = valCouleurs[1];
+
+// Colorer le bg de l'input 
 
 inputsCouleur[0].style.background = valCouleurs[0];
 inputsCouleur[1].style.background = valCouleurs[1];
 
-fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})` // pareil que `linear-gradient(${inclinaison}deg, ${valCouleurs[0]}, ${valCouleurs[1]})` car valCouleurs contient des chaines de caract séparées par des virgules, ce qui correspond aux arguments qu'il faut mettre dansla fonction css linear-gradient :)
+// Regex pour vérifier les input de couleur
+
+function checkHexValidity(input) {
+    const inputValue = input.value;
+    if (regex.test(inputValue)) {
+        console.log(`Le code hexadécimal ${inputValue} est valide.`);
+    } else {
+        console.log(`Le code hexadécimal ${inputValue} n'est pas valide.`);
+    }
+}
+
+// inputsCouleur.forEach(input => {
+//      console.log('au chargement de la page : '+ input.value); // Affiche la valeur de chaque input dans la console
+// });
+
+inputsCouleur.forEach(input => {  // Vérification à chaque modification de l'input
+    input.addEventListener('input', () => {
+        checkHexValidity(input);
+    });
+});
 
 // On écoute le input range pour définir le fond à partir de l'inclinaison ou du rayon
 
 tilt.addEventListener('input', (e) => {
-    if(fond.classList.contains('linear')) {
+    if(fond.classList.contains('linear')) {   
         if(repeat) {
             inclinaison = e.target.value * 3.6;
             fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})`;
@@ -93,20 +120,29 @@ radius.addEventListener('input', (e) => {
 
 // Choix gradient radial ou linéaire
 
+tilt.disabled = false;
+radius.disabled = true;
+
 linearBtn.addEventListener('click', () => {
-  type = 'linear';
-  //console.log('linearBtn ' + type)
-  setGradient(type, valCouleurs, largeurRepetition, hauteurRepetition);
-  fond.classList.remove('radial');
-  fond.classList.add('linear');
+    tilt.disabled = false;
+    radius.disabled = true;
+
+    type = 'linear';
+    //console.log('linearBtn ' + type)
+    setGradient(type, valCouleurs, largeurRepetition, hauteurRepetition);
+    fond.classList.remove('radial');
+    fond.classList.add('linear');
 });
 
 radialBtn.addEventListener('click', () => {
-  //console.log('radialBtn addEventListener : '+ rayon);
-  type = 'radial';
-  setGradient(type, valCouleurs, largeurRepetition, hauteurRepetition);
-  fond.classList.remove('linear');
-  fond.classList.add('radial');
+    tilt.disabled = true;
+    radius.disabled = false;
+
+    //console.log('radialBtn addEventListener : '+ rayon);
+    type = 'radial';
+    setGradient(type, valCouleurs, largeurRepetition, hauteurRepetition);
+    fond.classList.remove('linear');
+    fond.classList.add('radial');
 });
 
 function setGradient(type, colors, largeurRepetition, hauteurRepetition) {
@@ -179,14 +215,13 @@ btns.forEach(btn => {
 function rajouteEnleve(e){
     erreur.innerText = '';
 
-    const allInputs = document.querySelectorAll(".inp-couleur");
     const randomColor = Math.floor(Math.random()*10000000).toString(16); // Math.floor retourne l'entier en dessous d'un nombre à virgule - Math.random retourne un nombre à virgule entre 0 et 0.999999999999999999 - *10000000 permet d'avoir un grand nombre de nombres aléatoires - toString(16):  pour convertir un nombre en chaîne de caractères en utilisant la base 16 (hexadécimal)
-    
+
     // Rajout couleur 
 
     if(e.target.className === "plus"){
 
-        if(allInputs.length > 8){ // on ne peut pas rajouter plus de 8 couleurs
+        if(inputsCouleur.length > 8){ // on ne peut pas rajouter plus de 8 couleurs
             return;
         }
 
@@ -204,11 +239,18 @@ function rajouteEnleve(e){
         
         // On rajoute les nouvelles couleurs dans le tableau valCouleurs
         valCouleurs.push(`#${randomColor.toUpperCase()}`);
+        inputsCouleur = document.querySelectorAll(".inp-couleur");
 
         // MAJ du fond body avec le contenu  de valCouleurs (origine: bouton "plus")
         setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
-        // console.log(fond.classList);
-        //console.log(valCouleurs.length);
+
+        // On check le regex du dernier input qu'on a rajotué 
+        inputsCouleur[inputsCouleur.length-1].addEventListener('input', () => { 
+            checkHexValidity(inputsCouleur[inputsCouleur.length-1]);
+        });
+        // inputsCouleur.forEach(input => {
+        //     console.log('function rajouteEnleve plus : '+ input.value); 
+        // });
     }
     
     // Supression couleur
@@ -223,7 +265,7 @@ function rajouteEnleve(e){
         }
         else {
             valCouleurs.pop(); // on supprime la dernière couleur du tableau valCouleurs
-            allInputs[allInputs.length - 1].remove();  //on supprime l'inpu qui correspond dans le DOM
+            inputsCouleur[inputsCouleur.length - 1].remove();  //on supprime l'inpu qui correspond dans le DOM
 
             index--;
 
@@ -266,17 +308,24 @@ btnShuffle.addEventListener("click", () => {
 
 // Switch sur l'input pour choisir si bg répété ou non
 
+widthInput.disabled = true; //par défaut quand la page charge: inputs grisés car la case repeat est pas checkée
+heightInput.disabled = true;
+
 switchInput.addEventListener('change', () => {
     if(switchInput.checked) {
         //console.log("Checkbox cochée.");
         repeat = true;
         switchContainer.classList.add('repetition');
         setGradient(type, valCouleurs, largeurRepetition, hauteurRepetition);
+        widthInput.disabled = false;
+        heightInput.disabled = false;
     } else {
         //console.log("Checkbox décochée.");
         repeat = false;
         switchContainer.classList.remove('repetition');
         setGradient(type, valCouleurs, largeurRepetition, hauteurRepetition);
+        widthInput.disabled = true;
+        heightInput.disabled = true;
     }
 });
 

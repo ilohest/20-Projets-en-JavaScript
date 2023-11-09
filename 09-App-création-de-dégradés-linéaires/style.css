@@ -55,6 +55,9 @@ button {
     align-items: center;
     cursor: pointer;
 }
+button:hover {
+    border: 3px;
+}
 button img {
     width: 30px;
     pointer-events: none; /* si on met un event listener sur le bouton, il faut qu'il fonctionne meme quand on clique sur l'image du bouton donc on met ça */
@@ -82,6 +85,7 @@ button img {
 }
 
 /* Bouton radio : repeat background */
+
 .checkbox-container {
     display: flex;
     justify-content: space-between;
@@ -89,18 +93,16 @@ button img {
 .switch-container {
     flex-direction: column;
 }
-/* .switch {
+.switch {
     position: relative;
     display: inline-block;
-    width: 48px;
+    width: 38px;
     height: 21px;
-} */
-/* .switch input {
+}
+.switch input {
     opacity: 0;
-    width: 0;
-    height: 0;
-} */
-/* .slider {
+}
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -111,8 +113,8 @@ button img {
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-} */
-/* .slider:before {
+}
+.slider:before {
     position: absolute;
     content: "";
     height: 13px;
@@ -123,15 +125,15 @@ button img {
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-} */
-/* .switch input:checked + .slider {
+}
+.switch input:checked + .slider {
     background-color: #0075ff;
 }
 .switch input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-} */
+    -webkit-transform: translateX(17px);
+    -ms-transform: translateX(17px);
+    transform: translateX(17px);
+} 
 
 /* Message d'erreur si <2 couleurs */
 
@@ -182,8 +184,10 @@ button img {
     padding: 10px;
     border: 1px solid #886262;
     font-size: 18px;
+    cursor: pointer;
+    background: #fff;
 }
 .css-script:hover {
-    color: #f1f1f1;
+    background: #f1f1f1;
 }
 
