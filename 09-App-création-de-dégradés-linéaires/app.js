@@ -17,7 +17,6 @@ const switchContainer = document.querySelector('.switch-container');
 const widthInput = document.getElementById('repetition-width');
 const heightInput = document.getElementById('repetition-height');
 const inputContainer = document.querySelector('.input-container');
-const leftInput = document.getElementById('leftInput');
 
 
 // Initialisation
@@ -399,9 +398,9 @@ function getRandomColor() {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-  }
+}
 
-  window.onload = function () {
+window.onload = function () {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     const size = 64; // Taille de l'icône en pixels
@@ -428,9 +427,9 @@ function getRandomColor() {
     link.rel = 'shortcut icon';
     link.href = canvas.toDataURL('image/x-icon');
     document.getElementsByTagName('head')[0].appendChild(link);
-  };
+};
 
-  // Color picker
+// Color picker
 
 
 //   inputsCouleur.forEach((input) => {
@@ -448,7 +447,6 @@ function getRandomColor() {
 // const rightInput = document.querySelectorAll('.rightInput');
 // const leftInputs = document.getElementById('leftInput');
 // const colorPickers = document.querySelector('.color-picker');
-let colorPickerVisible = false;
 
 // colorPickers.forEach((colorPicker, index) => {
 //     colorPicker.addEventListener('click', () => {
@@ -491,36 +489,47 @@ let colorPickerVisible = false;
 //     });
 
 
+
   
-
- // valCouleurs[indexEnCours - 1] = e.target.value.toUpperCase()
-
-
-
-//  let colorPickerVisible = false;
-  let colorPicker;
  
-  const rightInput = document.getElementById('rightInput');
- 
-  rightInput.addEventListener('click', () => {
+const rightInput = document.getElementById('rightInput');
+const leftInput = document.getElementById('leftInput');
+let colorPickerVisible = false;
+let colorPicker;
+
+rightInput.addEventListener('click', () => {
     if (!colorPickerVisible) {
-      colorPicker = document.createElement('input');
-      colorPicker.type = 'color';
-      colorPicker.value = leftInput.value;
-      colorPicker.oninput = (e) => {
-        leftInput.value = e.target.value;
-        leftInput.style.background = leftInput.value;
-        leftInput.addEventListener('input',MAJColors);
+        // Création de l'input color picker
+        colorPicker = document.createElement('input');
+        colorPicker.type = 'color';
+        colorPicker.value = leftInput.value; // Pour que le color picker soit déjà sur la couleur de l'input texte
+        colorPicker.oninput = (e) => {
+            leftInput.value = e.target.value.toUpperCase(); // MAJ du texte dans l'input texte 
+            leftInput.style.background = leftInput.value; // MAJ du BG de l'input texte
       };
-      inputContainer.appendChild(colorPicker);
-      colorPicker.click();
-      colorPickerVisible = true;
-      console.log('couleur  '+ inputsCouleur.values);
+        inputContainer.appendChild(colorPicker);
+        colorPicker.click();
+        colorPickerVisible = true;
+        //console.log('couleur  '+ leftInput.value);
+
+        colorPicker.addEventListener('input', MAJColorPicker); // MAJ du BG du body quand le color picker change 
     } else {
-        inputContainer.removeChild(colorPicker);
-      colorPickerVisible = false;
+        inputContainer.removeChild(colorPicker); // On retire l'input color du DOM
+        colorPickerVisible = false;
     }
- });
+});
 
+//MAJ du bg du body en fonction de la valeur de color picker
+function MAJColorPicker(event) {
+    const selectedColor = event.target.value;
+    const parentDiv = event.target.parentElement;
+    const inputText = parentDiv.querySelector('.inp-couleur');
+    let indexEnCours = inputText.getAttribute('data-index');
+    //console.log(`La couleur sélectionnée est : ${selectedColor}`);
 
+    valCouleurs[indexEnCours - 1] = event.target.value.toUpperCase();
 
+    // MAJ du fond body avec le contenu de valCouleurs (origine: input du color picker)
+    setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
+}
+ 
