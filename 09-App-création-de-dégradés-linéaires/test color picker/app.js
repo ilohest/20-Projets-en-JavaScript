@@ -234,6 +234,10 @@ function rajouteEnleve(e){
         nvCouleur.setAttribute('maxlength', '7');
         nvCouleur.value = `#${randomColor.toUpperCase()}`;
         nvCouleur.style.background = `#${randomColor}`;
+        // Déterminer la couleur du texte en fonction du BG de l'input texte
+        const rgb = hexToRgb(nvCouleur.value); // on transforme code hexa de l'input texte en rgb
+        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
+        nvCouleur.style.color = textColor; // changer la couleur 
 
         // Création de la div ▼ (color-picker-trigger)
         const divColorPickerTrigger = document.createElement('div');
@@ -319,12 +323,17 @@ inputsCouleur.forEach(inp => {
     //console.log(' inp.addEventListener '+ inp);
 });
 
-
 function MAJColors(e){
     let indexEnCours = e.target.getAttribute('data-index');
     e.target.value = e.target.value.toUpperCase();
     valCouleurs[indexEnCours - 1] = e.target.value.toUpperCase();
     e.target.style.background = valCouleurs[indexEnCours - 1];
+
+    // Déterminer la couleur du texte en fonction du BG de l'input texte
+    const rgb = hexToRgb(e.target.value); // on transforme code hexa de l'input texte en rgb
+    //console.log('MAJColors : '+ e.target.value);
+    const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
+    e.target.style.color = textColor; // changer la couleur 
 
     // Vérification de la validité du code hexa via fonction qui check via un regex 
     checkHexValidity(valCouleurs[indexEnCours - 1]);
@@ -343,6 +352,11 @@ btnShuffle.addEventListener("click", () => {
 
         inputs[i].value = valCouleurs[i].toUpperCase();
         inputs[i].style.background = valCouleurs[i].toUpperCase();
+
+        // Déterminer la couleur du texte en fonction du BG de l'input texte
+        const rgb = hexToRgb(valCouleurs[i]); // on transforme code hexa de l'input texte en rgb
+        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
+        inputs[i].style.color = textColor; // changer la couleur 
 
         errorHexaCode.innerText = '';
 
@@ -483,6 +497,12 @@ colorPickers.forEach(colorPicker => {
             inpCouleur.value = inpColorPicker.value.toUpperCase(); //MAJ du texte dans l'input texte        
             inpCouleur.style.background = inpCouleur.value; // MAJ du BG de l'input texte        
             MAJColorPicker(e); // MAJ du BG du body quand le color picker change 
+            
+            // Déterminer la couleur du texte en fonction du BG de l'input texte quand on uitlise color picker 
+            const rgb = hexToRgb(inpCouleur.value); // on transforme code hexa de l'input texte en rgb
+            const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
+
+            inpCouleur.style.color = textColor; // changer la couleur 
         });
     });
 });
@@ -500,3 +520,27 @@ function MAJColorPicker(event) {
     // MAJ du fond body avec le contenu de valCouleurs (origine: input du color picker)
     setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
 };
+
+// Déterminer la couleur du texte en fonction du BG de l'input texte au chargement de la page 
+
+inputsCouleur.forEach(inputCouleur => {
+    const rgb = hexToRgb(inputCouleur.value); // on transforme code hexa de l'input texte en rgb
+    const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
+
+    inputCouleur.style.color = textColor; // changer la couleur 
+});
+
+// Convertir Hexa to RGB : sort un objet avec 3 valeurs pour r g b 
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+}
+
+// Fonction qui sort true ou false selon le contraste
+function isColorLight(r, g, b) {
+    return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+}
