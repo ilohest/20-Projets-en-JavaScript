@@ -46,10 +46,12 @@ body {
     right: 15px;
     cursor: pointer;
 }
-input[type="color"] {
+.inp-color-picker {
     position: absolute;
-    right: -55px;
-    opacity:1;
+    right: 12px;
+    opacity:0;
+    cursor: pointer;
+    width: 22px
 }
 .container-couleurs {
     flex-direction: column;

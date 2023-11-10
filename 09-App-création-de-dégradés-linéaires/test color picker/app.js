@@ -17,6 +17,7 @@ const switchContainer = document.querySelector('.switch-container');
 const widthInput = document.getElementById('repetition-width');
 const heightInput = document.getElementById('repetition-height');
 const inputContainer = document.querySelector('.input-container');
+const colorPickers = document.querySelectorAll('.inp-color-picker');
 
 
 // Initialisation
@@ -239,6 +240,12 @@ function rajouteEnleve(e){
         divColorPickerTrigger.setAttribute('class', 'color-picker-trigger rightInput');
         divColorPickerTrigger.textContent = '▼';
 
+        // Création de l'input color (inp-color-picker)
+        const nvColorPicker = document.createElement('input');
+        nvColorPicker.setAttribute('class', 'inp-color-picker');
+        nvColorPicker.setAttribute('type', 'color');
+        nvColorPicker.value = nvCouleur.value ;
+
         // Création de l'élément div (input-container)
         const divInputContainer = document.createElement('div');
         divInputContainer.setAttribute('class', 'input-container');
@@ -246,6 +253,7 @@ function rajouteEnleve(e){
         // Ajout des éléments à la div conteneur parent
         divInputContainer.appendChild(nvCouleur);
         divInputContainer.appendChild(divColorPickerTrigger);
+        divInputContainer.appendChild(nvColorPicker);
 
         // Ajout du conteneur au conteneur principal (container-couleurs)
         containerCouleurs.appendChild(divInputContainer);
@@ -253,11 +261,20 @@ function rajouteEnleve(e){
         // Ajout de l'écouteur d'événements à l'élément input texte
         nvCouleur.addEventListener('input', MAJColors);
 
-        // On remet à jour rightInputs qui permet d'écouter les nouveaux ▼ ajoutés afin d'ouvrir des color picker
-        const rightInputs = document.querySelectorAll('.rightInput');
-        rightInputs.forEach(rightInput => {
-            rightInput.addEventListener('click', handleRightInputClick);
-        });        
+        // On remet à jour colorPickers qui permet d'écouter les nouveaux éléments ajoutés
+        const colorPickers = document.querySelectorAll('.inp-color-picker');
+        colorPickers.forEach(colorPicker => {
+            colorPicker.addEventListener('click', function (e) {
+                const inpCouleur = this.parentElement.querySelector('.inp-couleur');
+                const inpColorPicker = this.parentElement.querySelector('.inp-color-picker');
+                inpColorPicker.addEventListener('input', function () {
+                    inpCouleur.value = inpColorPicker.value.toUpperCase(); //MAJ du texte dans l'input texte        
+                    inpCouleur.style.background = inpCouleur.value; // MAJ du BG de l'input texte        
+                    MAJColorPicker(e); // MAJ du BG du body quand le color picker change 
+                });
+            });
+        });     
+        
 
         index++;
         
@@ -453,56 +470,22 @@ window.onload = function () {
 };
 
 // Color picker
+   
+colorPickers.forEach(colorPicker => {
+    colorPicker.addEventListener('click', function (e) {
+        const inpCouleur = this.parentElement.querySelector('.inp-couleur');
+        const inpColorPicker = this.parentElement.querySelector('.inp-color-picker');
 
-const rightInputs = document.querySelectorAll('.rightInput');
-let colorPickerVisible = false;
-let colorPicker;
+        inpColorPicker.value = inpCouleur.value; // Pour que le color picker soit déjà sur la couleur de l'input texte
 
-rightInputs.forEach(rightInput => {
-    rightInput.addEventListener('click', handleRightInputClick);
+        // Écouter les changements dans l'input color et mettre à jour l'input texte        
+        inpColorPicker.addEventListener('input', function () {
+            inpCouleur.value = inpColorPicker.value.toUpperCase(); //MAJ du texte dans l'input texte        
+            inpCouleur.style.background = inpCouleur.value; // MAJ du BG de l'input texte        
+            MAJColorPicker(e); // MAJ du BG du body quand le color picker change 
+        });
+    });
 });
-
-const activeRightInput = document.querySelector('.rightInput.active');
-
-
-//Ouvrir et fermer le colorpicker en cliquant sur rightInput
-function handleRightInputClick(event) {
-    const rightInput = event.target;
-    const parentDiv = rightInput.parentElement;
-    const leftInput = parentDiv.querySelector('.inp-couleur');
-
-    // Vérifier si un color picker est déjà ouvert dans le parent du parent
-    const openColorPicker = parentDiv.parentElement.querySelector('.color-picker');
-
-    if (openColorPicker && openColorPicker !== colorPicker) {
-        // Si un autre color picker est déjà ouvert, le fermer
-        parentDiv.parentElement.removeChild(openColorPicker);
-        colorPickerVisible = false;
-        openColorPicker.previousElementSibling.classList.remove('active');
-    }
-
-    if (!colorPickerVisible) {
-        // Création de l'input color picker
-        colorPicker = document.createElement('input');
-        colorPicker.type = 'color';
-        colorPicker.value = leftInput.value; // Pour que le color picker soit déjà sur la couleur de l'input texte
-        colorPicker.oninput = (e) => {
-            leftInput.value = e.target.value.toUpperCase(); // MAJ du texte dans l'input texte 
-            leftInput.style.background = leftInput.value; // MAJ du BG de l'input texte
-      };
-        parentDiv.appendChild(colorPicker);
-        colorPicker.click();
-        colorPickerVisible = true;
-        rightInput.classList.add('active');
-        //console.log('couleur  '+ leftInput.value);
-
-        colorPicker.addEventListener('input', MAJColorPicker); // MAJ du BG du body quand le color picker change 
-    } else {
-        parentDiv.removeChild(colorPicker); // On retire l'input color du DOM
-        colorPickerVisible = false;
-        rightInput.classList.remove('active');
-    }
-};
 
 //MAJ du bg du body en fonction de la valeur de color picker
 function MAJColorPicker(event) {
@@ -517,24 +500,3 @@ function MAJColorPicker(event) {
     // MAJ du fond body avec le contenu de valCouleurs (origine: input du color picker)
     setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
 };
-
-// Fermer le colorpicker n'importe où où on clique 
-document.addEventListener('click', (event) => {
-    const parentDiv = event.target.parentElement;
-    const rightInput = parentDiv.querySelector('.rightInput');
-    // let indexEnCours = rightInput.getAttribute('data-index');
-    // console.log(' document.addEventListener'+ indexEnCours);
-
-    // Vérifier si l'élément cliqué est le color picker / un de ses descendants / le bouton triangle 
-    const isColorPickerClick = (colorPicker && (event.target === colorPicker || colorPicker.contains(event.target))) || event.target === rightInput;
-
-    // Si l'élément cliqué n'est pas isColorPickerClick, on le ferme
-    if (!isColorPickerClick) {
-        // Vérifier si colorPicker existe
-        if (colorPickerVisible) {
-            const parentDiv = colorPicker.parentElement;
-            parentDiv.removeChild(colorPicker);
-            colorPickerVisible = false; // Réinitialiser colorPickerVisible après la suppression
-        }
-    }
-});
