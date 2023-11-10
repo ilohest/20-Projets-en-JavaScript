@@ -48,7 +48,7 @@ inputsCouleur[1].style.background = valCouleurs[1];
 function checkHexValidity(input) {
     errorHexaCode.innerText = '';
     if (!regex.test(input)) {
-        errorHexaCode.innerText = `The hexadecimal code ${input} is invalid.`;
+        errorHexaCode.innerText = `The hexadecimal code ${input.value} is invalid.`;
     }
 }
 
@@ -533,12 +533,27 @@ inputsCouleur.forEach(inputCouleur => {
 // Convertir Hexa to RGB : sort un objet avec 3 valeurs pour r g b 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
+    if (result) {
+        return {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        };
+    }
+
+    // Vérification pour les codes hexadécimaux abrégés de 3 caractères
+    result = /^#?([a-f\d])([a-f\d])([a-f\d])$/i.exec(hex);
+    if (result) {
+        return {
+            r: parseInt(result[1] + result[1], 16),
+            g: parseInt(result[2] + result[2], 16),
+            b: parseInt(result[3] + result[3], 16)
+        };
+    }
+
+    return null;
 }
+
 
 // Fonction qui sort true ou false selon le contraste
 function isColorLight(r, g, b) {
