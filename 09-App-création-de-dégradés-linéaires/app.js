@@ -492,12 +492,21 @@ window.onload = function () {
 
   
  
-const rightInput = document.getElementById('rightInput');
-const leftInput = document.getElementById('leftInput');
+const rightInputs = document.querySelectorAll('.rightInput');
+//const leftInputs = document.querySelectorAll('.leftInput');
 let colorPickerVisible = false;
 let colorPicker;
 
-rightInput.addEventListener('click', () => {
+rightInputs.forEach(rightInput => {
+    rightInput.addEventListener('click', handleRightInputClick);
+    console.log('cucu '+ rightInput);
+});
+
+function handleRightInputClick(event) {
+    const rightInput = event.target;
+    const parentDiv = rightInput.parentElement;
+    const leftInput = parentDiv.querySelector('.inp-couleur');
+
     if (!colorPickerVisible) {
         // Création de l'input color picker
         colorPicker = document.createElement('input');
@@ -507,21 +516,21 @@ rightInput.addEventListener('click', () => {
             leftInput.value = e.target.value.toUpperCase(); // MAJ du texte dans l'input texte 
             leftInput.style.background = leftInput.value; // MAJ du BG de l'input texte
       };
-        inputContainer.appendChild(colorPicker);
+        parentDiv.appendChild(colorPicker);
         colorPicker.click();
         colorPickerVisible = true;
         //console.log('couleur  '+ leftInput.value);
 
         colorPicker.addEventListener('input', MAJColorPicker); // MAJ du BG du body quand le color picker change 
     } else {
-        inputContainer.removeChild(colorPicker); // On retire l'input color du DOM
+        parentDiv.removeChild(colorPicker); // On retire l'input color du DOM
         colorPickerVisible = false;
     }
-});
+};
 
 //MAJ du bg du body en fonction de la valeur de color picker
 function MAJColorPicker(event) {
-    const selectedColor = event.target.value;
+    //const selectedColor = event.target.value;
     const parentDiv = event.target.parentElement;
     const inputText = parentDiv.querySelector('.inp-couleur');
     let indexEnCours = inputText.getAttribute('data-index');
@@ -531,5 +540,23 @@ function MAJColorPicker(event) {
 
     // MAJ du fond body avec le contenu de valCouleurs (origine: input du color picker)
     setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
-}
- 
+};
+
+
+// Ajoutez un gestionnaire d'événements de clic au document
+document.addEventListener('click', (event) => {
+    const parentDiv = event.target.parentElement;
+    const rightInput = parentDiv.querySelector('.rightInput');
+    // Vérifiez si l'élément cliqué est le color picker ou un de ses descendants
+    const isColorPickerClick = (colorPicker && (event.target === colorPicker || colorPicker.contains(event.target))) || event.target === rightInput;
+
+    // Si l'élément cliqué n'est pas le color picker, fermez-le
+    if (!isColorPickerClick) {
+        // Vérifiez d'abord si colorPicker existe
+        if (colorPickerVisible) {
+            const parentDiv = colorPicker.parentElement;
+            parentDiv.removeChild(colorPicker);
+            colorPickerVisible = false; // Réinitialisez colorPicker après la suppression
+        }
+    }
+});
