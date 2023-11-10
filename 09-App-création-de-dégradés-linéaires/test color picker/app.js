@@ -48,7 +48,7 @@ inputsCouleur[1].style.background = valCouleurs[1];
 function checkHexValidity(input) {
     errorHexaCode.innerText = '';
     if (!regex.test(input)) {
-        errorHexaCode.innerText = `The hexadecimal code ${input.value} is invalid.`;
+        errorHexaCode.innerText = `The hexadecimal code ${input} is invalid.`;
     }
 }
 
@@ -58,7 +58,7 @@ function checkHexValidity(input) {
 
 inputsCouleur.forEach(input => {  // Vérification à chaque modification de l'input
     input.addEventListener('input', () => {
-        checkHexValidity(input);
+        checkHexValidity(input.value);
     });
 });
 
@@ -207,6 +207,13 @@ function setGradient(type, colors, largeurRepetition, hauteurRepetition) {
     }
 }
 
+// Générer une couleur en code hexadécimal aléatoire
+
+function generateRandomHexColor() {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16); // Math.floor retourne l'entier en dessous d'un nombre à virgule - Math.random retourne un nombre à virgule entre 0 et 0.999999999999999999 - *10000000 permet d'avoir un grand nombre de nombres aléatoires - toString(16):  pour convertir un nombre en chaîne de caractères en utilisant la base 16 (hexadécimal)
+    return '#' + '0'.repeat(6 - randomColor.length) + randomColor; // rajoute des 0 si on n'a pas 6 caractères
+}
+
 // Rajout / supression de couleurs 
 
 btns.forEach(btn => {
@@ -216,7 +223,7 @@ btns.forEach(btn => {
 function rajouteEnleve(e){
     errorColorsNb.innerText = '';
     const allInputs = document.querySelectorAll(".inp-couleur");
-    const randomColor = Math.floor(Math.random()*10000000).toString(16); // Math.floor retourne l'entier en dessous d'un nombre à virgule - Math.random retourne un nombre à virgule entre 0 et 0.999999999999999999 - *10000000 permet d'avoir un grand nombre de nombres aléatoires - toString(16):  pour convertir un nombre en chaîne de caractères en utilisant la base 16 (hexadécimal)
+
 
     // Rajout couleur 
 
@@ -232,8 +239,8 @@ function rajouteEnleve(e){
         nvCouleur.setAttribute('type', 'text');
         nvCouleur.setAttribute('data-index', index);
         nvCouleur.setAttribute('maxlength', '7');
-        nvCouleur.value = `#${randomColor.toUpperCase()}`;
-        nvCouleur.style.background = `#${randomColor}`;
+        nvCouleur.value = `${generateRandomHexColor().toUpperCase()}`;
+        nvCouleur.style.background = nvCouleur.value;
         // Déterminer la couleur du texte en fonction du BG de l'input texte
         const rgb = hexToRgb(nvCouleur.value); // on transforme code hexa de l'input texte en rgb
         const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
@@ -279,11 +286,10 @@ function rajouteEnleve(e){
             });
         });     
         
-
         index++;
         
         // On rajoute les nouvelles couleurs dans le tableau valCouleurs
-        valCouleurs.push(`#${randomColor.toUpperCase()}`);
+        valCouleurs.push(`${nvCouleur.value}`);
         // inputsCouleur = document.querySelectorAll(".inp-couleur");
 
         // MAJ du fond body avec le contenu  de valCouleurs (origine: bouton "plus")
@@ -291,7 +297,8 @@ function rajouteEnleve(e){
 
         // On check le regex du dernier input qu'on a rajotué 
         inputsCouleur[inputsCouleur.length-1].addEventListener('input', () => { 
-            checkHexValidity(inputsCouleur[inputsCouleur.length-1]);
+            checkHexValidity(inputsCouleur[inputsCouleur.length-1].value);
+            //console.log('checkVal : '+ inputsCouleur[inputsCouleur.length-1].value);
         });
         // inputsCouleur.forEach(input => {
         //     console.log('function rajouteEnleve plus : '+ input.value); 
@@ -330,11 +337,13 @@ function MAJColors(e){
     e.target.style.background = valCouleurs[indexEnCours - 1];
 
     // Déterminer la couleur du texte en fonction du BG de l'input texte
-    const rgb = hexToRgb(e.target.value); // on transforme code hexa de l'input texte en rgb
-    //console.log('MAJColors : '+ e.target.value);
-    const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
-    e.target.style.color = textColor; // changer la couleur 
-
+    if (e.target.value.length === 4 || e.target.value.length === 7){ // on ne prend que les codes hexa valides (avec # + 3 ou 6 caractères)
+        const rgb = hexToRgb(e.target.value.substring(1)); // on transforme code hexa de l'input texte en rgb + on supprime le #
+        //console.log('MAJColors : '+ e.target.value);
+        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
+        e.target.style.color = textColor; // changer la couleur 
+    }
+    
     // Vérification de la validité du code hexa via fonction qui check via un regex 
     checkHexValidity(valCouleurs[indexEnCours - 1]);
     //console.log('MAJColor - valCouleurs : ' + typeof valCouleurs + ' - indexEnCours : ' + indexEnCours + ' - valCouleurs[indexEnCours] : ' + valCouleurs[indexEnCours-1]);
@@ -347,8 +356,10 @@ function MAJColors(e){
 
 btnShuffle.addEventListener("click", () => {
     const inputs = document.querySelectorAll(".inp-couleur");
+    const inpColorPicker = document.querySelectorAll('.inp-color-picker');
+
     for (i = 0; i < valCouleurs.length; i++) {
-        valCouleurs[i] = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        valCouleurs[i] =  `${generateRandomHexColor()}`;;
 
         inputs[i].value = valCouleurs[i].toUpperCase();
         inputs[i].style.background = valCouleurs[i].toUpperCase();
@@ -357,6 +368,8 @@ btnShuffle.addEventListener("click", () => {
         const rgb = hexToRgb(valCouleurs[i]); // on transforme code hexa de l'input texte en rgb
         const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
         inputs[i].style.color = textColor; // changer la couleur 
+
+        inpColorPicker[i].value = inputs[i].value; // Pour que le color picker soit déjà sur la couleur de l'input texte
 
         errorHexaCode.innerText = '';
 
@@ -419,7 +432,7 @@ function copyCSS() {
     // Créer un nouvel élément de texte temporaire pour y stocker le contenu à copier
     const elementTemporaire = document.createElement('textarea');
     elementTemporaire.value = codeCSS;
-    console.log("copyCSS - 'codeCSS' : " + codeCSS);
+    //console.log("copyCSS - 'codeCSS' : " + codeCSS);
 
     // Ajouter l'élément temporaire à la page
     document.body.appendChild(elementTemporaire);
@@ -553,7 +566,6 @@ function hexToRgb(hex) {
 
     return null;
 }
-
 
 // Fonction qui sort true ou false selon le contraste
 function isColorLight(r, g, b) {
