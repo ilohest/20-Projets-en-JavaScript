@@ -15,15 +15,35 @@ body {
 }
 .container-couleurs,
 .container-range,
-.container-btn,
-.container-radio,
-.switch-container,
-.css-script {
+.container-radio {
     height: auto;
-    width: 310px;
+    width: 280px;
     display: flex;
     margin-bottom:20px;
     justify-content: space-between;
+}
+.container-btn {
+    height: auto;
+    width: 300px;
+    display: flex;
+    margin-bottom:20px;
+    justify-content: space-between;
+}
+.switch-container, 
+.css-script {
+    height: auto;
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+}
+.bg {
+    box-sizing: border-box;
+    background: rgb(250, 250, 250, 0.7);
+    padding: 10px;
+    border: 1px solid #886262;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    width: 300px;
 }
 
 /* Input couleurs */
@@ -46,10 +66,12 @@ body {
     right: 15px;
     cursor: pointer;
 }
-input[type="color"] {
+.inp-color-picker {
     position: absolute;
-    right: -55px;
-    opacity:1;
+    right: 12px;
+    opacity:0;
+    cursor: pointer;
+    width: 22px
 }
 .container-couleurs {
     flex-direction: column;
@@ -123,6 +145,7 @@ button img {
 }
 .switch-container {
     flex-direction: column;
+    width: 280px;
 }
 .switch {
     position: relative;
