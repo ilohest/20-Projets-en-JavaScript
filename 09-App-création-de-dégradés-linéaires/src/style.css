@@ -12,14 +12,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     background: #d3b7b7;
+    flex-direction: row;
+    gap: 100px;
 }
 .container-couleurs,
 .container-range,
 .container-radio {
     height: auto;
-    width: 280px;
     display: flex;
     margin-bottom:20px;
     justify-content: space-between;
@@ -149,7 +149,7 @@ button img {
 .gradient-radial {
     display: flex;
     align-items: center;
-    height: 21px;
+    height: 20px;
 }
 .gradient-lineaire label,
 .gradient-radial label{
@@ -189,7 +189,7 @@ button img {
     border-radius: 2px;
 } 
 .container-btn-error {
-    margin-bottom: 20px;
+    transform: translateX(6%);
 }
 
 /* Copier CSS */
@@ -198,8 +198,39 @@ md-filled-text-field {
     width: 300px;
     margin: 5px 0 25px 0;
     resize: vertical;
+    overflow-wrap: break-word;
+}
+.CSS-button-container {
+    display: flex;
+    justify-content: center;
 }
 :root {
     --md-filled-text-field-input-text-font: 'Rajdhani', sans-serif;
     --md-filled-button-label-text-font:'Rajdhani', sans-serif;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 800px) {
+    .container-btn,
+    .switch-container,
+    .bg, 
+    .input-container, 
+    .erreur-code-hexa,
+    md-filled-text-field {
+        width: 210px;
+    }
+    .switch-container {
+        width: 190px;
+    }
+}
+@media screen and (max-width: 600px) {
+    body {
+        flex-direction: column;
+        gap: 0;
+        height: 100%;
+    }
+    .container-btn {
+        transform: translateX(6px);
+    }
 }

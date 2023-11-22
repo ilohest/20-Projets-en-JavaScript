@@ -16,84 +16,94 @@
 </head>
 
 <body class="linear">
-    <div class="container-couleurs-error">
-        <div class="container-couleurs">
-            <div class="close-container" data-index="1">
-                <div class="input-container">
-                    <input type="text" data-index="1" maxlength="7" class="inp-couleur leftInput">
-                    <md-icon-button data-index="1" class="color-picker-trigger rightInput">
-                        <md-icon class="brush">brush</md-icon>
-                    </md-icon-button>
-                    <input type="color" class="inp-color-picker">
+    <div class="col">
+        <div class="container-couleurs-error">
+            <div class="container-couleurs">
+                <div class="close-container" data-index="1">
+                    <div class="input-container">
+                        <input type="text" data-index="1" maxlength="7" class="inp-couleur leftInput">
+                        <md-icon-button data-index="1" class="color-picker-trigger rightInput">
+                            <md-icon class="brush">brush</md-icon>
+                        </md-icon-button>
+                        <input type="color" class="inp-color-picker">
+                    </div>
+                    <md-filled-tonal-icon-button class="close"><md-icon>close</md-icon></md-filled-tonal-icon-button>
                 </div>
-                <md-filled-tonal-icon-button class="close"><md-icon>close</md-icon></md-filled-tonal-icon-button>
-            </div>
-
-            <div class="close-container" data-index="2">
-                <div class="input-container">
-                    <input type="text" data-index="2" maxlength="7" class="inp-couleur leftInput">
-                    <md-icon-button data-index="2" class="color-picker-trigger rightInput">
-                        <md-icon class="brush">brush</md-icon>
-                    </md-icon-button>
-                    <input type="color" class="inp-color-picker">
+    
+                <div class="close-container" data-index="2">
+                    <div class="input-container">
+                        <input type="text" data-index="2" maxlength="7" class="inp-couleur leftInput">
+                        <md-icon-button data-index="2" class="color-picker-trigger rightInput">
+                            <md-icon class="brush">brush</md-icon>
+                        </md-icon-button>
+                        <input type="color" class="inp-color-picker">
+                    </div>
+                    <md-filled-tonal-icon-button class="close" ><md-icon size="small">close</md-icon></md-filled-tonal-icon-button>
                 </div>
-                <md-filled-tonal-icon-button class="close" ><md-icon size="small">close</md-icon></md-filled-tonal-icon-button>
             </div>
+            <span class="erreur-code-hexa"></span>
         </div>
-        <span class="erreur-code-hexa"></span>
-    </div>
-
-    <div class="container-btn-error">
-        <div class="container-btn">
-            <md-filled-icon-button class="plus"><md-icon>add</md-icon></md-filled-icon-button>
-            <md-filled-icon-button class="moins"><md-icon>remove</md-icon></md-filled-icon-button>
-            <md-filled-tonal-icon-button class="shuffle"><md-icon>shuffle</md-icon></md-filled-tonal-icon-button>
-        </div>
-        <span class="erreur-nb-couleurs"></span>
-    </div>
-
-    <div class="bg">
-        <div class="container-radio">
-            <div class="gradient-lineaire">
-                <label for="linear"><strong>Linear gradient</strong></label>
-                <md-radio id="linear" name="gradient-type" value="linear" checked></md-radio>
+    
+        <div class="container-btn-error">
+            <div class="container-btn">
+                <md-filled-icon-button class="plus"><md-icon>add</md-icon></md-filled-icon-button>
+                <md-filled-icon-button class="moins"><md-icon>remove</md-icon></md-filled-icon-button>
+                <md-filled-tonal-icon-button class="shuffle"><md-icon>shuffle</md-icon></md-filled-tonal-icon-button>
             </div>
-            <div class="container-range">
-                <label for="tiltID">Tilt</label>
-                <md-slider class="tilt" aria-label="Inclinaison du dégradé" id="tiltID" min="0" max="100"
-                    value="12.5"></md-slider>
-            </div>
-
-            <div class="gradient-radial">
-                <label for="radial"><strong>Radial gradient</strong></label>
-                <md-radio id="radial" name="gradient-type" value="radial"></md-radio>
-            </div>
-            <div class="container-range">
-                <label for="radiusID">Radius</label>
-                <md-slider class="radius" aria-label="Rayon du dégradé" id="radiusID" min="-100" max="100"
-                    value="0"></md-slider>
-            </div>
-        </div>
-
-        <div class="switch-container">
-            <div class="checkbox-container">
-                <label><strong>Repeat</strong></label>
-                <md-switch id="toggle"></md-switch>
-            </div>
-            <div class="container-range">
-                <label for="repetition-width">Width</label>
-                <md-slider class="repetition-width" aria-label="Largeur de la répétition" id="repetition-width" min="0" max="500" value="50">
-                </md-slider>
-
-                <label for="repetition-height">Height</label>
-                <md-slider class="repetition-height" aria-label="Hauteur de la répétition" id="repetition-height" min="0" max="500" value="50">
-                </md-slider>
-            </div>
+            <span class="erreur-nb-couleurs"></span>
         </div>
     </div>
 
-    <md-filled-text-field type="textarea" rows="3" cols="35" class="CSS-code-content" value="background: linear-gradient(45deg, #BA5370,#F4E2D8);" readonly></md-filled-text-field>
-    <md-filled-button class="css-script">CSS code<md-icon class="copy-icon" slot="icon">content_copy</md-icon></md-filled-button>
+    <div class="col">
+        <div class="bg">
+            <div class="container-radio">
+                <div class="gradient-lineaire">
+                    <label for="linear"><strong>Linear gradient</strong></label>
+                    <md-radio id="linear" name="gradient-type" value="linear" checked></md-radio>
+                </div>
+                <div class="container-range">
+                    <label for="tiltID">Tilt</label>
+                    <md-slider class="tilt" aria-label="Inclinaison du dégradé" id="tiltID" min="0" max="100"
+                        value="12.5"></md-slider>
+                </div>
+    
+                <div class="gradient-radial">
+                    <label for="radial"><strong>Radial gradient</strong></label>
+                    <md-radio id="radial" name="gradient-type" value="radial"></md-radio>
+                </div>
+                <div class="container-range">
+                    <label for="radiusID">Radius</label>
+                    <md-slider class="radius" aria-label="Rayon du dégradé" id="radiusID" min="-100" max="100"
+                        value="0"></md-slider>
+                </div>
+            </div>
+    
+            <div class="switch-container">
+                <div class="checkbox-container">
+                    <label><strong>Repeat</strong></label>
+                    <md-switch id="toggle"></md-switch>
+                </div>
+                <div class="container-range">
+                    <label for="repetition-width">Width</label>
+                    <md-slider class="repetition-width" aria-label="Largeur de la répétition" id="repetition-width" min="0" max="500" value="250">
+                    </md-slider>
+    
+                    <label for="repetition-height">Height</label>
+                    <md-slider class="repetition-height" aria-label="Hauteur de la répétition" id="repetition-height" min="0" max="500" value="250">
+                    </md-slider>
+                </div>
+            </div>
+        </div>
+        
+        <div class="CSS-container">
+            <md-filled-text-field type="textarea" rows="3" cols="35" class="CSS-code-content" value="background: linear-gradient(45deg, #BA5370,#F4E2D8);" readonly></md-filled-text-field>
+        </div>
+
+        <div class="CSS-button-container">
+            <md-filled-button class="css-script">CSS code<md-icon class="copy-icon" slot="icon">content_copy</md-icon></md-filled-button>
+        </div>
+        
+    </div>
 </body>
 
 </html>

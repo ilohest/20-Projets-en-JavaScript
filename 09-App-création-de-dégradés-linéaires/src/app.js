@@ -42,8 +42,8 @@ let rayon = 0;
 let index = 3; //représente le data-index de l'input couleur
 let type = 'linear';
 let repeat = false;
-let largeurRepetition = 50;
-let hauteurRepetition = 50;
+let largeurRepetition = 250;
+let hauteurRepetition = 250;
 let codeCSSLineaire = "background: linear-gradient(45deg, #BA5370,#F4E2D8);";
 let codeCSSRadial = "";
 
@@ -648,3 +648,4 @@ function hexToRgb(hex) {
 function isColorLight(r, g, b) {
     return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
 }
+
