@@ -5,7 +5,9 @@
     padding: 0;
 }
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Inconsolata', monospace;
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Rajdhani', sans-serif;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -29,8 +31,7 @@ body {
     margin-bottom:20px;
     justify-content: space-between;
 }
-.switch-container, 
-.css-script {
+.switch-container {
     height: auto;
     width: 300px;
     display: flex;
@@ -47,7 +48,17 @@ body {
 }
 
 /* Input couleurs */
-
+.close-container{
+    display: flex;
+    align-items: center;
+    transform: translateX(20px);
+}
+.close {
+    margin-left: 20px;
+    --md-filled-tonal-icon-button-icon-size: 18px;
+    --md-filled-tonal-icon-button-container-width: 30px;
+    --md-filled-tonal-icon-button-container-height: 30px;
+}
 .container-couleurs {
     width: 100%;
 }
@@ -55,15 +66,15 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    width: 300px; /* Ajustez la largeur selon vos besoins */
+    width: 300px; 
 }
 .input-container:hover {
     opacity: 0.8;
 }
 .color-picker-trigger {
     position: absolute;
-    top: 21px;
-    right: 15px;
+    top: 17px;
+    right: 13px;
     cursor: pointer;
 }
 .inp-color-picker {
@@ -82,8 +93,16 @@ body {
     border-radius: 3px;
     padding: 10px;
     font-size: 20px;
-    border: 2px solid #886262;
+    border: 1px solid #886262;
     margin: 5px 0;
+    font-family: 'Inconsolata', monospace;
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Rajdhani', sans-serif;
+}
+.inp-couleur:focus,
+.CSS-code-content:focus {
+    border: 2px solid #6750A4;
+    outline: none; 
 }
 .erreur-code-hexa {
     color: #ff3636;
@@ -125,6 +144,7 @@ button img {
 .gradient-radial {
     display: flex;
     align-items: center;
+    height: 20px;
 }
 .gradient-lineaire label,
 .gradient-radial label{
@@ -136,12 +156,15 @@ button img {
 .container-range {
  flex-direction: column;
 }
-
+.container-range label {
+    padding: 10px 0 0 14px;
+}
 /* Bouton radio : repeat background */
 
 .checkbox-container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .switch-container {
     flex-direction: column;
@@ -150,44 +173,7 @@ button img {
 .switch {
     position: relative;
     display: inline-block;
-    width: 38px;
-    height: 21px;
 }
-.switch input {
-    opacity: 0;
-}
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 20px;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 13px;
-    width: 13px;
-    left: 4px;
-    bottom: 4px;
-    border-radius: 50%;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-.switch input:checked + .slider {
-    background-color: #0075ff;
-}
-.switch input:checked + .slider:before {
-    -webkit-transform: translateX(17px);
-    -ms-transform: translateX(17px);
-    transform: translateX(17px);
-} 
 
 /* Message d'erreur si <2 couleurs */
 
@@ -201,18 +187,12 @@ button img {
 
 /* Copier CSS */
 
-.css-script {
-    justify-content: center;
-    align-items: center;
-    border: none;
-    outline: none;
-    border-radius: 3px;
-    padding: 10px;
-    border: 1px solid #886262;
-    font-size: 18px;
-    cursor: pointer;
-    background: #fff;
+md-filled-text-field {
+    width: 300px;
+    margin: 5px 0 25px 0;
+    resize: vertical;
 }
-.css-script:hover {
-    background: #f1f1f1;
+:root {
+    --md-filled-text-field-input-text-font: 'Rajdhani', sans-serif;
+    --md-filled-button-label-text-font:'Rajdhani', sans-serif;
 }

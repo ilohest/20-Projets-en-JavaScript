@@ -1,8 +1,20 @@
+
+import '@material/web/slider/slider.js';
+import '@material/web/iconbutton/filled-icon-button.js';
+import '@material/web/iconbutton/filled-tonal-icon-button.js';
+import '@material/web/icon/icon.js';
+import '@material/web/radio/radio.js';
+import '@material/web/switch/switch.js';
+import '@material/web/button/filled-button.js';
+import '@material/web/textfield/filled-text-field.js';
+import './style.css';
+
+
 var inputsCouleur = document.querySelectorAll('.inp-couleur');
 const regex = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
 const radius = document.querySelector('.radius');
 const tilt = document.querySelector('.tilt');
-const btns = document.querySelectorAll('button');
+const btns = document.querySelectorAll('md-filled-icon-button');
 const fond = document.body;
 const containerCouleurs = document.querySelector('.container-couleurs');
 const errorColorsNb = document.querySelector('.erreur-nb-couleurs');
@@ -16,21 +28,23 @@ const repetitionHeight = document.querySelector('.repetition-height');
 const switchContainer = document.querySelector('.switch-container');
 const widthInput = document.getElementById('repetition-width');
 const heightInput = document.getElementById('repetition-height');
-const inputContainer = document.querySelector('.input-container');
 const colorPickers = document.querySelectorAll('.inp-color-picker');
-
+const brush = document.querySelectorAll('.brush');
+const boutonCSS = document.querySelector('.css-script');
+const CSScodeContent = document.querySelector('.CSS-code-content');
+const closeBtns = document.querySelectorAll('.close');
 
 // Initialisation
 
 let valCouleurs = ['#BA5370','#F4E2D8'];
 let inclinaison = 45;
-let rayon = 0; 
+let rayon = 0;
 let index = 3; //représente le data-index de l'input couleur
 let type = 'linear';
-let repeat = false; 
+let repeat = false;
 let largeurRepetition = 50;
 let hauteurRepetition = 50;
-let codeCSSLineaire = "";
+let codeCSSLineaire = "background: linear-gradient(45deg, #BA5370,#F4E2D8);";
 let codeCSSRadial = "";
 
 fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})` // pareil que `linear-gradient(${inclinaison}deg, ${valCouleurs[0]}, ${valCouleurs[1]})` car valCouleurs contient des chaines de caract séparées par des virgules, ce qui correspond aux arguments qu'il faut mettre dansla fonction css linear-gradient :)
@@ -38,7 +52,7 @@ fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})` // 
 inputsCouleur[0].value = valCouleurs[0];
 inputsCouleur[1].value = valCouleurs[1];
 
-// Colorer le bg de l'input 
+// Colorer le bg de l'input
 
 inputsCouleur[0].style.background = valCouleurs[0];
 inputsCouleur[1].style.background = valCouleurs[1];
@@ -65,7 +79,7 @@ inputsCouleur.forEach(input => {  // Vérification à chaque modification de l'i
 // On écoute le input range pour définir le fond à partir de l'inclinaison ou du rayon
 
 tilt.addEventListener('input', (e) => {
-    if(fond.classList.contains('linear')) {   
+    if(fond.classList.contains('linear')) {
         if(repeat) {
             inclinaison = e.target.value * 3.6;
             fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})`;
@@ -73,11 +87,13 @@ tilt.addEventListener('input', (e) => {
             fond.style.backgroundRepeat= "repeat";
 
             codeCSSLineaire = `background: linear-gradient(${inclinaison}deg, ${valCouleurs}) 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`;
+            CSScodeContent.setAttribute('value', `background: linear-gradient(${inclinaison}deg, ${valCouleurs}) 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`);
         } else {
             inclinaison = e.target.value * 3.6;
             fond.style.background = `linear-gradient(${inclinaison}deg, ${valCouleurs})`;
             //console.log('inputRange.addEventListener if linear - "inclinaison" : ' + inclinaison)
             codeCSSLineaire = `background: linear-gradient(${inclinaison}deg, ${valCouleurs});`;
+            CSScodeContent.setAttribute('value', `background: linear-gradient(${inclinaison}deg, ${valCouleurs});`);
         }
     }
 });
@@ -97,6 +113,8 @@ radius.addEventListener('input', (e) => {
             fond.style.backgroundRepeat= "repeat";
 
             codeCSSRadial = `background: ${gradientString} 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`;
+            CSScodeContent.setAttribute('value',  `background: ${gradientString} 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`);
+
         } else {
             rayon = e.target.value;
             //console.log('radius.addEventListener : '+ rayon);
@@ -108,8 +126,9 @@ radius.addEventListener('input', (e) => {
             gradientString += ')';
             fond.style.background = gradientString;
             codeCSSRadial = `background: ${gradientString};`;
+            CSScodeContent.setAttribute('value', `background: ${gradientString};`);
         }
-      
+
     }
 });
 
@@ -148,10 +167,13 @@ function setGradient(type, colors, largeurRepetition, hauteurRepetition) {
             fond.style.backgroundRepeat= "repeat";
 
             codeCSSLineaire = `background: linear-gradient(${inclinaison}deg, ${colors}) 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`;
+            CSScodeContent.setAttribute('value',  `background: linear-gradient(${inclinaison}deg, ${colors}) 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`);
+            
         } else {
             fond.style.background = `linear-gradient(${inclinaison}deg, ${colors})`;
             //console.log('setGradient if linear : ' + type, inclinaison, colors)
             codeCSSLineaire = `background: linear-gradient(${inclinaison}deg, ${colors});`;
+            CSScodeContent.setAttribute('value',  `background: linear-gradient(${inclinaison}deg, ${colors});`);
             //console.log(codeCSSLineaire);
         }
     }
@@ -173,8 +195,9 @@ function setGradient(type, colors, largeurRepetition, hauteurRepetition) {
             fond.style.backgroundRepeat= "repeat";
 
             codeCSSRadial = `background: ${gradientString} 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`;
+            CSScodeContent.setAttribute('value', `background: ${gradientString} 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`);
             //console.log(codeCSSRadial);
-            
+
         } else {
             let gradientString = 'radial-gradient(circle at center';
             const colorStep = 100 / (valCouleurs.length - 1);
@@ -190,6 +213,7 @@ function setGradient(type, colors, largeurRepetition, hauteurRepetition) {
             fond.style.background = gradientString;
 
             codeCSSRadial = `background: ${gradientString};`;
+            CSScodeContent.setAttribute('value', `background: ${gradientString};`);
             //console.log(codeCSSRadial);
         }
     }
@@ -202,7 +226,7 @@ function generateRandomHexColor() {
     return '#' + '0'.repeat(6 - randomColor.length) + randomColor; // rajoute des 0 si on n'a pas 6 caractères
 }
 
-// Rajout / supression de couleurs 
+// Rajout / supression de couleurs
 
 btns.forEach(btn => {
     btn.addEventListener('click', rajouteEnleve)
@@ -210,14 +234,14 @@ btns.forEach(btn => {
 
 function rajouteEnleve(e){
     errorColorsNb.innerText = '';
-    const allInputs = document.querySelectorAll(".inp-couleur");
+    // const allInputs = document.querySelectorAll(".inp-couleur");
+    const closeContainer = document.querySelectorAll('.close-container');
 
-
-    // Rajout couleur 
+    // Rajout couleur
 
     if(e.target.className === "plus"){
 
-        if(allInputs.length > 8){ // on ne peut pas rajouter plus de 8 couleurs
+        if(valCouleurs.length > 9){ // on ne peut pas rajouter plus de 8 couleurs
             return;
         }
 
@@ -231,13 +255,18 @@ function rajouteEnleve(e){
         nvCouleur.style.background = nvCouleur.value;
         // Déterminer la couleur du texte en fonction du BG de l'input texte
         const rgb = hexToRgb(nvCouleur.value); // on transforme code hexa de l'input texte en rgb
-        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
-        nvCouleur.style.color = textColor; // changer la couleur 
+        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false
+        nvCouleur.style.color = textColor; // changer la couleur du texte 
 
-        // Création de la div ▼ (color-picker-trigger)
-        const divColorPickerTrigger = document.createElement('div');
-        divColorPickerTrigger.setAttribute('class', 'color-picker-trigger rightInput');
-        divColorPickerTrigger.textContent = '▼';
+        // Création de md-icon-button avec le pinceau (color-picker-trigger)
+        const mdIconButton = document.createElement('md-icon-button');
+        mdIconButton.setAttribute('class', 'color-picker-trigger rightInput');
+        
+        const mdIcon = document.createElement('md-icon');
+        mdIcon.setAttribute('class', 'brush');
+        mdIcon.style.color = textColor; // changer la couleur du pinceau
+        mdIcon.textContent = 'brush';
+        mdIconButton.appendChild(mdIcon);
 
         // Création de l'input color (inp-color-picker)
         const nvColorPicker = document.createElement('input');
@@ -245,17 +274,30 @@ function rajouteEnleve(e){
         nvColorPicker.setAttribute('type', 'color');
         nvColorPicker.value = nvCouleur.value ;
 
+        // Création du bouton close (md-filled-tonal-icon-button)
+        const nvCloseBtn = document.createElement('md-filled-tonal-icon-button');
+        nvCloseBtn.setAttribute('class', 'close');
+        nvCloseBtn.innerHTML = `<md-icon>close</md-icon>`;
+
         // Création de l'élément div (input-container)
         const divInputContainer = document.createElement('div');
         divInputContainer.setAttribute('class', 'input-container');
 
+        // Création de l'élément div (close-container)
+        const divCloseContainer = document.createElement('div');
+        divCloseContainer.setAttribute('class', 'close-container');
+        divCloseContainer.setAttribute('data-index', index);
+
         // Ajout des éléments à la div conteneur parent
         divInputContainer.appendChild(nvCouleur);
-        divInputContainer.appendChild(divColorPickerTrigger);
+        divInputContainer.appendChild(mdIconButton);
         divInputContainer.appendChild(nvColorPicker);
 
+        divCloseContainer.appendChild(divInputContainer);
+        divCloseContainer.appendChild(nvCloseBtn);
+
         // Ajout du conteneur au conteneur principal (container-couleurs)
-        containerCouleurs.appendChild(divInputContainer);
+        containerCouleurs.appendChild(divCloseContainer);
 
         // Ajout de l'écouteur d'événements à l'élément input texte
         nvCouleur.addEventListener('input', MAJColors);
@@ -267,62 +309,81 @@ function rajouteEnleve(e){
                 const inpCouleur = this.parentElement.querySelector('.inp-couleur');
                 const inpColorPicker = this.parentElement.querySelector('.inp-color-picker');
                 inpColorPicker.addEventListener('input', function () {
-                    inpCouleur.value = inpColorPicker.value.toUpperCase(); //MAJ du texte dans l'input texte        
-                    inpCouleur.style.background = inpCouleur.value; // MAJ du BG de l'input texte        
-                    MAJColorPicker(e); // MAJ du BG du body quand le color picker change 
+                    inpCouleur.value = inpColorPicker.value.toUpperCase(); //MAJ du texte dans l'input texte
+                    inpCouleur.style.background = inpCouleur.value; // MAJ du BG de l'input texte
+                    MAJColorPicker(e); // MAJ du BG du body quand le color picker change
 
-                    // Déterminer la couleur du texte en fonction du BG de l'input texte quand on uitlise color picker 
+                    // Déterminer la couleur du texte en fonction du BG de l'input texte quand on uitlise color picker
                     const rgb = hexToRgb(inpCouleur.value); // on transforme code hexa de l'input texte en rgb
-                    const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
-                    inpCouleur.style.color = textColor; // changer la couleur 
+                    const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false
+                    inpCouleur.style.color = textColor; // changer la couleur du texte 
+                    mdIcon.style.color = textColor; //  changer la couleur du pinceau 
                 });
-
             });
-        });    
-        
+        });
+
         index++;
-        
+
         // On rajoute les nouvelles couleurs dans le tableau valCouleurs
         valCouleurs.push(`${nvCouleur.value}`);
-        // inputsCouleur = document.querySelectorAll(".inp-couleur");
 
         // MAJ du fond body avec le contenu  de valCouleurs (origine: bouton "plus")
         setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
 
-        // On check le regex du dernier input qu'on a rajotué 
-        inputsCouleur[inputsCouleur.length-1].addEventListener('input', () => { 
-            checkHexValidity(inputsCouleur[inputsCouleur.length-1].value);
-            //console.log('checkVal : '+ inputsCouleur[inputsCouleur.length-1].value);
+        // On check le regex du dernier input qu'on a rajotué
+        inputsCouleur[inputsCouleur.length - 1].addEventListener('input', () => {
+            checkHexValidity(inputsCouleur[inputsCouleur.length - 1].value);
         });
         // inputsCouleur.forEach(input => {
-        //     console.log('function rajouteEnleve plus : '+ input.value); 
+        //     console.log('function rajouteEnleve plus : '+ input.value);
         // });
-
     }
-    
-    // Supression couleur
+
+    // Supression denière couleur avec le bouton -
 
     else if(e.target.className === "moins"){
         if(valCouleurs.length === 2){
             errorColorsNb.innerText = 'At least 2 colors needed.';
         }
-        else {
+        else {  
             valCouleurs.pop(); // on supprime la dernière couleur du tableau valCouleurs
-            allInputs[allInputs.length - 1].remove();  //on supprime l'input qui correspond dans le DOM
+            closeContainer[closeContainer.length - 1].remove();  //on supprime dans le DOM la dernière div qui contient les inputs ajoutés avec le bouton + 
 
             index--;
 
             // MAJ du fond body avec dernière couleur en moins (origine: bouton "moins")
             setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
-        }  
-    }  
+        }
+    }
 }
 
-//Modification manuelle des couleurs via les inputs
+// Supression couleur choisie avec bouton x
+
+closeBtns.forEach(closeBtn => {
+    closeBtn.addEventListener('click', SupressionCouleur);
+});
+
+function SupressionCouleur(e) {
+    console.log('SupressionCouleur : '+ closeBtns.length);
+    if(valCouleurs.length === 2){
+        errorColorsNb.innerText = 'At least 2 colors needed.';
+    }
+    else {  
+        const closeContainerf = e.target.parentElement;
+        console.log('SupressionCouleur :  '+ closeContainerf);
+        let indexEnCours = closeContainerf.getAttribute('data-index');
+
+        valCouleurs.splice(1, indexEnCours - 1); // on supprime la couleur du tableau valCouleurs
+        closeContainerf.remove();  //on supprime dans le DOM la div qui contient la couleur qu'on veut supprimer 
+        setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
+        //mettre à jour visuel code css et copy code css
+    }
+}
+
+// Modification manuelle des couleurs via les inputs
 
 inputsCouleur.forEach(inp => {
     inp.addEventListener('input', MAJColors);
-    //console.log(' inp.addEventListener '+ inp);
 });
 
 function MAJColors(e){
@@ -330,16 +391,17 @@ function MAJColors(e){
     e.target.value = e.target.value.toUpperCase();
     valCouleurs[indexEnCours - 1] = e.target.value.toUpperCase();
     e.target.style.background = valCouleurs[indexEnCours - 1];
+    const brush = this.parentElement.querySelector('md-icon');
 
     // Déterminer la couleur du texte en fonction du BG de l'input texte
     if (e.target.value.length === 4 || e.target.value.length === 7){ // on ne prend que les codes hexa valides (avec # + 3 ou 6 caractères)
         const rgb = hexToRgb(e.target.value.substring(1)); // on transforme code hexa de l'input texte en rgb + on supprime le #
-        //console.log('MAJColors : '+ e.target.value);
-        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
-        e.target.style.color = textColor; // changer la couleur 
+        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false
+        e.target.style.color = textColor; // changer la couleur du texte
+        brush.style.color = textColor; // changer la couleur du pinceau
     }
-    
-    // Vérification de la validité du code hexa via fonction qui check via un regex 
+
+    // Vérification de la validité du code hexa via fonction qui check via un regex
     checkHexValidity(valCouleurs[indexEnCours - 1]);
     //console.log('MAJColor - valCouleurs : ' + typeof valCouleurs + ' - indexEnCours : ' + indexEnCours + ' - valCouleurs[indexEnCours] : ' + valCouleurs[indexEnCours-1]);
 
@@ -347,23 +409,25 @@ function MAJColors(e){
     setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
 }
 
-// Couleurs aléatoires 
+// Couleurs aléatoires
 
 btnShuffle.addEventListener("click", () => {
     const inputs = document.querySelectorAll(".inp-couleur");
     const inpColorPicker = document.querySelectorAll('.inp-color-picker');
+    const brush = document.querySelectorAll('.brush');
 
-    for (i = 0; i < valCouleurs.length; i++) {
+    for (let i = 0; i < valCouleurs.length; i++) {
         valCouleurs[i] =  `${generateRandomHexColor()}`;;
 
         inputs[i].value = valCouleurs[i].toUpperCase();
-        inputs[i].style.background = valCouleurs[i].toUpperCase();
+        inputs[i].style.background = valCouleurs[i];
 
         // Déterminer la couleur du texte en fonction du BG de l'input texte
         const rgb = hexToRgb(valCouleurs[i]); // on transforme code hexa de l'input texte en rgb
-        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
-        inputs[i].style.color = textColor; // changer la couleur 
-
+        const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false
+        inputs[i].style.color = textColor; // changer la couleur du texte
+        brush[i].style.color = textColor; // changer la couleur du pinceau
+        
         inpColorPicker[i].value = inputs[i].value; // Pour que le color picker soit déjà sur la couleur de l'input texte
 
         errorHexaCode.innerText = '';
@@ -379,7 +443,7 @@ widthInput.disabled = true; //par défaut quand la page charge: inputs grisés c
 heightInput.disabled = true;
 
 switchInput.addEventListener('change', () => {
-    if(switchInput.checked) {
+    if(switchInput.selected) {
         //console.log("Checkbox cochée.");
         repeat = true;
         switchContainer.classList.add('repetition');
@@ -409,6 +473,8 @@ repetitionHeight.addEventListener('input', (e) => {
 });
 
 // Copier code css dans le presse papier
+
+boutonCSS.addEventListener('click', copyCSS);
 
 function copyCSS() {
     let codeCSS = "";
@@ -442,16 +508,15 @@ function copyCSS() {
     document.body.removeChild(elementTemporaire);
 
     // Modifier le texte du bouton
-    const bouton = document.querySelector('.css-script');
-    bouton.innerText = 'CSS copied to clipboard !';
+    boutonCSS.innerHTML = `CSS code copied to clipboard <md-icon class="copy-icon" slot="icon">done</md-icon>`;
 
     // Revenir au texte d'origine après 3 secondes (3000 millisecondes)
     setTimeout(function() {
-        bouton.innerText = 'Copy CSS';
-    }, 3000);
+        boutonCSS.innerHTML = `CSS code <md-icon class="copy-icon" slot="icon">content_copy</md-icon>`;
+    }, 2000);
 }
 
-// Favicon avec couleurs aléatoires à chaque chargement de la page 
+// Favicon avec couleurs aléatoires à chaque chargement de la page
 
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -492,29 +557,32 @@ window.onload = function () {
 };
 
 // Color picker
-   
+
 colorPickers.forEach(colorPicker => {
     colorPicker.addEventListener('click', function (e) {
         const inpCouleur = this.parentElement.querySelector('.inp-couleur');
         const inpColorPicker = this.parentElement.querySelector('.inp-color-picker');
+        const brush = this.parentElement.querySelector('md-icon');
 
         inpColorPicker.value = inpCouleur.value; // Pour que le color picker soit déjà sur la couleur de l'input texte
 
-        // Écouter les changements dans l'input color et mettre à jour l'input texte        
+        // Écouter les changements dans l'input color et mettre à jour l'input texte
         inpColorPicker.addEventListener('input', function () {
-            inpCouleur.value = inpColorPicker.value.toUpperCase(); //MAJ du texte dans l'input texte        
-            inpCouleur.style.background = inpCouleur.value; // MAJ du BG de l'input texte        
-            MAJColorPicker(e); // MAJ du BG du body quand le color picker change 
-            
-            // Déterminer la couleur du texte en fonction du BG de l'input texte quand on uitlise color picker 
+            inpCouleur.value = inpColorPicker.value.toUpperCase(); //MAJ du texte dans l'input texte
+            inpCouleur.style.background = inpCouleur.value; // MAJ du BG de l'input texte
+            MAJColorPicker(e); // MAJ du BG du body quand le color picker change
+
+            // Déterminer la couleur du texte en fonction du BG de l'input texte quand on uitlise color picker
             const rgb = hexToRgb(inpCouleur.value); // on transforme code hexa de l'input texte en rgb
-            const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
-            inpCouleur.style.color = textColor; // changer la couleur 
+            const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false
+            inpCouleur.style.color = textColor; // changer la couleur du texte 
+            brush.style.color = textColor; // changer la couleur du pinceau 
         });
     });
 });
 
 //MAJ du bg du body en fonction de la valeur de color picker
+
 function MAJColorPicker(event) {
     //const selectedColor = event.target.value;
     const parentDiv = event.target.parentElement;
@@ -528,16 +596,17 @@ function MAJColorPicker(event) {
     setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
 };
 
-// Déterminer la couleur du texte en fonction du BG de l'input texte au chargement de la page 
+// Déterminer la couleur du texte & pinceau en fonction du BG de l'input texte au chargement de la page
 
 inputsCouleur.forEach(inputCouleur => {
     const rgb = hexToRgb(inputCouleur.value); // on transforme code hexa de l'input texte en rgb
-    const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false 
+    const textColor = isColorLight(rgb.r, rgb.g, rgb.b) ? '#000' : '#fff'; // on détermine la couleur du texte de l'input texte en fonction du contraste true / false
 
-    inputCouleur.style.color = textColor; // changer la couleur 
+    inputCouleur.style.color = textColor; // changer la couleur du texte
+    brush.style.color = textColor; // changer la couleur du pinceau 
 });
 
-// Convertir Hexa to RGB : sort un objet avec 3 valeurs pour r g b 
+// Convertir Hexa to RGB : sort un objet avec 3 valeurs pour r g b
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (result) {
