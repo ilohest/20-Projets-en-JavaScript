@@ -61,8 +61,10 @@ inputsCouleur[1].style.background = valCouleurs[1];
 
 function checkHexValidity(input) {
     errorHexaCode.innerText = '';
+    errorHexaCode.style.background = 'none';
     if (!regex.test(input)) {
         errorHexaCode.innerText = `The hexadecimal code ${input} is invalid.`;
+        errorHexaCode.style.background = 'rgb(225,225,225,0.5)'
     }
 }
 
@@ -196,8 +198,6 @@ function setGradient(type, colors, largeurRepetition, hauteurRepetition) {
 
             codeCSSRadial = `background: ${gradientString} 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`;
             CSScodeContent.setAttribute('value', `background: ${gradientString} 0% 0% / ${largeurRepetition}px ${hauteurRepetition}px repeat;`);
-            //console.log(codeCSSRadial);
-
         } else {
             let gradientString = 'radial-gradient(circle at center';
             const colorStep = 100 / (valCouleurs.length - 1);
@@ -234,7 +234,8 @@ btns.forEach(btn => {
 
 function rajouteEnleve(e){
     errorColorsNb.innerText = '';
-    // const allInputs = document.querySelectorAll(".inp-couleur");
+    errorColorsNb.style.background = 'none';
+
     const closeContainer = document.querySelectorAll('.close-container');
 
     // Rajout couleur
@@ -299,8 +300,9 @@ function rajouteEnleve(e){
         // Ajout du conteneur au conteneur principal (container-couleurs)
         containerCouleurs.appendChild(divCloseContainer);
 
-        // Ajout de l'écouteur d'événements à l'élément input texte
+        // Ajout des écouteurs d'événements à l'élément input texte + au bouton x
         nvCouleur.addEventListener('input', MAJColors);
+        nvCloseBtn.addEventListener('click', SupressionCouleur);
 
         // On remet à jour colorPickers qui permet d'écouter les nouveaux éléments ajoutés
         const colorPickers = document.querySelectorAll('.inp-color-picker');
@@ -344,6 +346,7 @@ function rajouteEnleve(e){
     else if(e.target.className === "moins"){
         if(valCouleurs.length === 2){
             errorColorsNb.innerText = 'At least 2 colors needed.';
+            errorColorsNb.style.background = 'rgb(225,225,225,0.5)';
         }
         else {  
             valCouleurs.pop(); // on supprime la dernière couleur du tableau valCouleurs
@@ -364,19 +367,29 @@ closeBtns.forEach(closeBtn => {
 });
 
 function SupressionCouleur(e) {
-    console.log('SupressionCouleur : '+ closeBtns.length);
     if(valCouleurs.length === 2){
         errorColorsNb.innerText = 'At least 2 colors needed.';
+        errorColorsNb.style.background = 'rgb(225,225,225,0.5)';
+
     }
     else {  
-        const closeContainerf = e.target.parentElement;
-        console.log('SupressionCouleur :  '+ closeContainerf);
-        let indexEnCours = closeContainerf.getAttribute('data-index');
+        const closeContainer = e.target.parentElement;
+        let indexEnCours = closeContainer.getAttribute('data-index');
 
-        valCouleurs.splice(1, indexEnCours - 1); // on supprime la couleur du tableau valCouleurs
-        closeContainerf.remove();  //on supprime dans le DOM la div qui contient la couleur qu'on veut supprimer 
+        valCouleurs.splice(indexEnCours - 1, 1); // on supprime la couleur du tableau valCouleurs
+        closeContainer.remove();  //on supprime dans le DOM la div qui contient la couleur qu'on veut supprimer 
+        
+        const allCloseConainers = document.querySelectorAll('.close-container');
+        const inpCouleur = document.querySelectorAll('.inp-couleur')
+
+        // MAJ de tous les data-index des closeContainer & inp-couleur en dessous 
+        for (let i = indexEnCours; i < allCloseConainers.length + 1; i++) {
+            allCloseConainers[i - 1].setAttribute('data-index', `${i}`);
+            inpCouleur[i - 1].setAttribute('data-index', `${i}`);
+        }
+
+        // MAJ du BG de la page 
         setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
-        //mettre à jour visuel code css et copy code css
     }
 }
 
@@ -431,6 +444,7 @@ btnShuffle.addEventListener("click", () => {
         inpColorPicker[i].value = inputs[i].value; // Pour que le color picker soit déjà sur la couleur de l'input texte
 
         errorHexaCode.innerText = '';
+        errorHexaCode.style.background = 'none';
 
         // MAJ du fond body avec le contenu  de valCouleurs (origine: bouton "shuffle")
         setGradient(fond.classList.contains('linear') ? 'linear' : 'radial', valCouleurs, largeurRepetition, hauteurRepetition);
@@ -439,7 +453,7 @@ btnShuffle.addEventListener("click", () => {
 
 // Switch sur l'input pour choisir si bg répété ou non
 
-widthInput.disabled = true; //par défaut quand la page charge: inputs grisés car la case repeat est pas checkée
+widthInput.disabled = true; //par défaut quand la page charge: inputs grisés car la case repeat est pas checkée 
 heightInput.disabled = true;
 
 switchInput.addEventListener('change', () => {
